@@ -24,7 +24,6 @@ def convolution(img,kernel):
             output[y, x] = (kernel_rotated * img[y:y + len(kernel), x:x + len(kernel)]).sum()
     return output
 
-
 def graph(img, title, ylabel, xlabel):
     plt.title(title)
     plt.ylabel(ylabel)
@@ -32,7 +31,12 @@ def graph(img, title, ylabel, xlabel):
     plt.imshow(img, interpolation='nearest', cmap='gray')
     plt.show()
 
-
+def fourier_image(img):
+    f = np.fft.fft2(img)
+    fshift = np.fft.fftshift(f)
+    magnitudFFT = np.log(np.abs(fshift))
+    return magnitudFFT
+    
 if __name__ == '__main__':
     graph(convolution(img, kernel_A),"Filtro A","Pixel","Pixel")
     graph(convolution(img, kernel_B), "Filtro B", "Pixel", "Pixel")
