@@ -7,7 +7,6 @@ kernel_B = np.array([[250,250,250],[250,250,250],[250,250,250]])
 kernel_C = np.array([[0,0,0],[0,0,0],[0,0,0]])
 kernel_D = (1/256)*np.array([[1, 4, 6, 4, 1],[4, 16, 24, 16, 4.0],[6, 24, 36, 24 , 6],[4, 16, 24, 16, 4],[1, 4, 6, 4 ,1]])
 kernel_E = np.array([[1,2,0,-2,-1],[1,2,0,-2,-1],[1,2,0,-2,-1],[1,2,0,-2,-1],[1,2,0,-2,-1]])
-img = io.imread('leena512.bmp',as_gray=True)  # load the image as grayscale
 
 def convolution(img,kernel):
     output = np.zeros_like(img)
@@ -24,11 +23,16 @@ def convolution(img,kernel):
             output[y, x] = (kernel_rotated * img[y:y + len(kernel), x:x + len(kernel)]).sum()
     return output
 
-def graph(img, title, ylabel, xlabel):
+def graph_convolution(img, title, ylabel, xlabel):
     plt.title(title)
     plt.ylabel(ylabel)
     plt.xlabel(xlabel)
     plt.imshow(img, interpolation='nearest', cmap='gray')
+    plt.show()
+
+def graph_fourier(img, title):
+    plt.title(title), plt.xticks([]), plt.yticks([])
+    plt.imshow(img, cmap='gray')
     plt.show()
 
 def fourier_image(img):
@@ -38,9 +42,13 @@ def fourier_image(img):
     return magnitudFFT
     
 if __name__ == '__main__':
-    graph(convolution(img, kernel_A),"Filtro A","Pixel","Pixel")
-    graph(convolution(img, kernel_B), "Filtro B", "Pixel", "Pixel")
-    graph(convolution(img, kernel_C), "Filtro C", "Pixel", "Pixel")
-    graph(convolution(img, kernel_D), "Filtro D", "Pixel", "Pixel")
-    graph(convolution(img, kernel_D), "Filtro E", "Pixel", "Pixel")
+    img = io.imread('leena512.bmp', as_gray=True)  # load the image as grayscale
+    graph_convolution(img,'Imagen original', 'Pixel', 'Pixel')
+    graph_convolution(convolution(img, kernel_A),"Filtro Experimental 1","Pixel","Pixel")
+    graph_convolution(convolution(img, kernel_B), "Filtro Experimental 2", "Pixel", "Pixel")
+    graph_convolution(convolution(img, kernel_C), "Filtro Experimental 3", "Pixel", "Pixel")
+    graph_convolution(convolution(img, kernel_D), "Filtro Suavizado Gaussiano", "Pixel", "Pixel")
+    graph_fourier(fourier_image(convolution(img,kernel_D)),'Fourier Filtro Suavizado Gaussiano')
+    graph_convolution(convolution(img, kernel_E), "Filtro Detector de bordes", "Pixel", "Pixel")
+    graph_fourier(fourier_image(convolution(img,kernel_E)),'Fourier Filtro Detector de bordes')
 
