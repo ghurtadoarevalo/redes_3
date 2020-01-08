@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 kernel = np.array([[256,256,256],[256,256,256],[256,256,256]])
 kernel2 = (1/256)*np.array([[1, 4, 6, 4, 1],[4, 16, 24, 16, 4.0],[6, 24, 36, 24 , 6],[4, 16, 24, 16, 4],[1, 4, 6, 4 ,1]])
+kernel3 = np.array([[1,2,0,-2,-1],[1,2,0,-2,-1],[1,2,0,-2,-1],[1,2,0,-2,-1],[1,2,0,-2,-1]])
 img = io.imread('leena512.bmp',as_gray=True)  # load the image as grayscale
 
 def convolution(img,kernel):
@@ -24,6 +25,6 @@ if __name__ == '__main__':
     plt.imshow(img, interpolation='nearest', cmap='gray')
     plt.show()
 
-    plt.imshow(convolution(img,kernel2), interpolation='nearest',cmap='gray')
+    plt.imshow(convolution(img,kernel3), interpolation='nearest',cmap='gray')
     plt.show()
 
